@@ -44,9 +44,9 @@ type Workload interface {
 	DoInsert(ctx context.Context, db DB) error
 
 	// DoOutputDataSet
-	DoOutputDataSet(ctx context.Context, db DB, opCount int64) error
+	DoOutputDataSet(ctx context.Context, p *properties.Properties, opCount int64) error
 	// DoOutputOperationSet
-	DoOutputOperationSet(ctx context.Context, db DB, opCount int64) error
+	DoOutputOperationSet(ctx context.Context, p *properties.Properties, opCount int64) error
 
 	// DoBatchInsert does batch insert.
 	DoBatchInsert(ctx context.Context, batchSize int, db DB) error

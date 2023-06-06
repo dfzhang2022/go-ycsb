@@ -265,7 +265,7 @@ func (c *core) verifyRow(state *coreState, key string, values map[string][]byte)
 		}
 	}
 }
-func (c *core) DoOutputDataSet(ctx context.Context, db ycsb.DB, opCount int64) error {
+func (c *core) DoOutputDataSet(ctx context.Context, p *properties.Properties, opCount int64) error {
 	fmt.Println("Get into DoOutputDataSet")
 	state := ctx.Value(stateKey).(*coreState)
 	r := state.r
@@ -293,8 +293,20 @@ func (c *core) DoOutputDataSet(ctx context.Context, db ycsb.DB, opCount int64) e
 	// 通过 JSON 序列化字典数据
 	data_set_in_json, _ := json.Marshal(dataset_map)
 
+	outputFileDir := "./dataset/"
+	recordCount, _ := p.Get(prop.RecordCount)
+	// operationCount, _ := p.Get(prop.OperationCount)
+	insertProportion, _ := p.Get(prop.InsertProportion)
+	readProportion, _ := p.Get(prop.ReadProportion)
+	updateProportion, _ := p.Get(prop.UpdateProportion)
+	scanProportion, _ := p.Get(prop.ScanProportion)
+	requestDistribution, _ := p.Get(prop.RequestDistribution)
+	fileName := "record-" + recordCount + "-" + insertProportion + "-" + readProportion + "-" + updateProportion + "-" + scanProportion + "-" + requestDistribution + ".json"
+	fileName = outputFileDir + fileName
+	fmt.Println("Write into : " + fileName)
+
 	// 将 JSON 格式数据写入当前目录下的./dataset/目录中（文件不存在会自动创建）
-	err = ioutil.WriteFile("./dataset/data_set.json", data_set_in_json, 0644)
+	err = ioutil.WriteFile(fileName, data_set_in_json, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -302,7 +314,7 @@ func (c *core) DoOutputDataSet(ctx context.Context, db ycsb.DB, opCount int64) e
 	return err
 }
 
-func (c *core) DoOutputOperationSet(ctx context.Context, db ycsb.DB, opCount int64) error {
+func (c *core) DoOutputOperationSet(ctx context.Context, p *properties.Properties, opCount int64) error {
 	fmt.Println("Get into DoOutputOperationSet")
 
 	state := ctx.Value(stateKey).(*coreState)
@@ -352,12 +364,12 @@ func (c *core) DoOutputOperationSet(ctx context.Context, db ycsb.DB, opCount int
 			// return c.doTransactionUpdate(ctx, db, state)
 		case insert:
 			// fmt.Println("insert")
-			return c.doTransactionInsert(ctx, db, state)
+			// return c.doTransactionInsert(ctx, db, state)
 		case scan:
 			// fmt.Println("scan")
-			return c.doTransactionScan(ctx, db, state)
+			// return c.doTransactionScan(ctx, db, state)
 		default:
-			return c.doTransactionReadModifyWrite(ctx, db, state)
+			// return c.doTransactionReadModifyWrite(ctx, db, state)
 		}
 		i++
 		// keyNum := c.keySequence.Next(r)
@@ -389,9 +401,22 @@ func (c *core) DoOutputOperationSet(ctx context.Context, db ycsb.DB, opCount int
 		output = append(output, string(tmp_unit_in_json))
 
 	}
+	outputFileDir := "./dataset/"
+
+	// recordCount, _ := p.Get(prop.RecordCount)
+	operationCount, _ := p.Get(prop.OperationCount)
+	insertProportion, _ := p.Get(prop.InsertProportion)
+	readProportion, _ := p.Get(prop.ReadProportion)
+	updateProportion, _ := p.Get(prop.UpdateProportion)
+	scanProportion, _ := p.Get(prop.ScanProportion)
+	requestDistribution, _ := p.Get(prop.RequestDistribution)
+	fileName := "request-" + operationCount + "-" + insertProportion + "-" + readProportion + "-" + updateProportion + "-" + scanProportion + "-" + requestDistribution + ".json"
+	fileName = outputFileDir + fileName
+	fmt.Println("Write into : " + fileName)
+
 	// fmt.Println(output)
 	operation_set_in_json, _ := json.Marshal(output)
-	err = ioutil.WriteFile("./dataset/operation_set.json", operation_set_in_json, 0644)
+	err = ioutil.WriteFile(fileName, operation_set_in_json, 0644)
 	if err != nil {
 		panic(err)
 	}

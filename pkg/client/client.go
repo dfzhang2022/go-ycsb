@@ -129,8 +129,8 @@ func (w *worker) run(ctx context.Context) {
 	// w.workload.DoOutputOperationSet(ctx, w.workDB, w.opCount)
 	if w.doCollectingData {
 		fmt.Println("Collecting Data for recordNum = ", w.recordCount, ", operationNum = ", w.operationCount)
-		w.workload.DoOutputDataSet(ctx, w.workDB, w.recordCount)
-		w.workload.DoOutputOperationSet(ctx, w.workDB, w.operationCount)
+		w.workload.DoOutputDataSet(ctx, w.p, w.recordCount)
+		w.workload.DoOutputOperationSet(ctx, w.p, w.operationCount)
 	} else {
 		for w.opCount == 0 || w.opsDone < w.opCount {
 			// fmt.Println("w.opsDone = ", w.opsDone)
