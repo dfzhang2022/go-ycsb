@@ -23,8 +23,9 @@
 #   Request distribution: zipfian
 
 recordcount=100000
-operationcount=100000
+operationcount=1000000
 workload=core
+threadcount=30
 
 readallfields=true
 
@@ -34,4 +35,6 @@ scanproportion=0
 insertproportion=0
 
 requestdistribution=uniform
+etcd.endpoints=192.168.37.11:2379
+etcd.dial_timeout=1s
 
