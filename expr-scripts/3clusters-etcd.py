@@ -1,7 +1,8 @@
 import os
 import sys
 argvs = sys.argv
-threads = [4,8,16,20,32,64,128,256,512,1024,2048]
+# threads = [4,8,16,20,32,64,128,256,512,1024,2048]
+threads = [4,8,16,32,50,64]
 # workloads = ['workloada','workloadb','workloadc','workloadd','workloade']
 workloads = ['workloada','workloadb','workloadc']
 # workloads = ['workloadc']
@@ -9,7 +10,7 @@ workloads = ['workloada','workloadb','workloadc']
 ycsb_cmds = ""
 
 record_count = 10000
-operation_count = 10000
+operation_count = 100000
 etcd_endpoints="192.168.37.11:2379"
 etcd_dial_timeout="1s"
 
